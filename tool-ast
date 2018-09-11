@@ -1,0 +1,2 @@
+#!/bin/sh
+java -cp target/jlox-1.0.0-SNAPSHOT.jar com.craftinginterpreters.tool.GenerateAst src/main/java/com/craftinginterpreters/lox
