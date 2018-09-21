@@ -24,7 +24,7 @@ class Parser {
     return statements;                        
   }
 
-  private Expr expression() {
+  Expr expression() {
     return assignment();       
   }
 

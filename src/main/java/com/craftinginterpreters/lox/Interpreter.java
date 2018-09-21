@@ -59,7 +59,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return a.equals(b);                        
   }
 
-  private String stringify(Object object) {                         
+  String stringify(Object object) {                         
     if (object == null) return "nil";
 
     // Hack. Work around Java adding ".0" to integer-valued doubles.
@@ -74,7 +74,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return object.toString();                                       
   }
 
-  private Object evaluate(Expr expr) {
+  Object evaluate(Expr expr) {
     return expr.accept(this);         
   }
 
