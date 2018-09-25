@@ -1,0 +1,4 @@
+if (7 > 5)
+  print("you should see this");
+else
+  print("if you see this, something went wrong...");
