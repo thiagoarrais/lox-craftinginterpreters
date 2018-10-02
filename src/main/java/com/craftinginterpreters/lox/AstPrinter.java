@@ -1,5 +1,9 @@
 package com.craftinginterpreters.lox;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+
 // Creates an unambiguous, if ugly, string representation of AST nodes.
 class AstPrinter implements Expr.Visitor<String> {                     
   String print(Expr expr) {                                            
@@ -10,6 +14,16 @@ class AstPrinter implements Expr.Visitor<String> {
   public String visitBinaryExpr(Expr.Binary expr) {                  
     return parenthesize(expr.operator.lexeme, expr.left, expr.right);
   }
+
+  @Override                                             
+  public String visitCallExpr(Expr.Call expr) {         
+    List<Expr> call = new ArrayList<Expr>();
+    call.add(expr.callee);
+    call.addAll(expr.arguments);
+
+    return parenthesize("call", call);
+  }
+
 
   @Override                                                          
   public String visitGroupingExpr(Expr.Grouping expr) {              
@@ -69,6 +83,10 @@ class AstPrinter implements Expr.Visitor<String> {
   */
 
   private String parenthesize(String name, Expr... exprs) {
+    return parenthesize(name, Arrays.asList(exprs));
+  }                                                        
+
+  private String parenthesize(String name, List<Expr> exprs) {
     StringBuilder builder = new StringBuilder();
 
     builder.append("(").append(name);                      
@@ -79,7 +97,7 @@ class AstPrinter implements Expr.Visitor<String> {
     builder.append(")");                                   
 
     return builder.toString();                             
-  }                                                        
+  }
 
   public static void main(String[] args) {                 
     Expr expression = new Expr.Binary(                     
