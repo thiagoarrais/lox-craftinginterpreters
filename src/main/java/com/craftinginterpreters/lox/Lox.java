@@ -27,6 +27,7 @@ private static boolean firstTry;
 
   private static void runFile(String path) throws IOException {
     byte[] bytes = Files.readAllBytes(Paths.get(path));        
+	  firstTry = false;
     run(new String(bytes, Charset.defaultCharset()));          
 
     // Indicate an error in the exit code.           
@@ -42,10 +43,12 @@ private static boolean firstTry;
       System.out.print("> ");                                  
       // try to run statement
       String line = reader.readLine();
+	    firstTry = true;
       run(line);
       if (hadError) {
         hadError = false;
         // error: maybe it is an expression
+	      firstTry = false;
         evaluate(line);
       }
       hadError = false;
@@ -54,7 +57,6 @@ private static boolean firstTry;
 
   // run statement
   private static void run(String source) {
-	firstTry = true;
     Scanner scanner = new Scanner(source);    
     List<Token> tokens = scanner.scanTokens();
     Parser parser = new Parser(tokens);                    
@@ -92,10 +94,10 @@ private static boolean firstTry;
   }
 
   private static void report(int line, String where, String message) {
-	if (!firstTry) { 
-	  System.err.println(                                               
-        "[line " + line + "] Error" + where + ": " + message);
-	}
+		if (!firstTry) { 
+		  System.err.println(                                               
+          "[line " + line + "] Error" + where + ": " + message);
+		}
     hadError = true;                                                  
   }               
 
