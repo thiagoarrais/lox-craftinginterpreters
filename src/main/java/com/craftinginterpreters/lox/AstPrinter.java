@@ -24,6 +24,10 @@ class AstPrinter implements Expr.Visitor<String> {
     return parenthesize("call", call);
   }
 
+  @Override                                        
+  public String visitGetExpr(Expr.Get expr) {      
+    return parenthesize("get " + expr.name, expr.object);
+  }
 
   @Override                                                          
   public String visitGroupingExpr(Expr.Grouping expr) {              
