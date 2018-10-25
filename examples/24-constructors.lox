@@ -1,0 +1,12 @@
+class Thing {
+  init(name) {
+    this.name = name;
+  }
+
+  sayHello() {
+    print "Hello " + this.name;
+  }
+}
+
+var world = Thing("World");
+world.sayHello();
