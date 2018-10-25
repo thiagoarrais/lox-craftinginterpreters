@@ -4,13 +4,11 @@ class Thing {
       print this.name;
     }
 
-    //this.name = "Sock";
-
     return localFunction;
   }
 }
 
 var thing = Thing();
-var callback = Thing().getCallback();
+var callback = thing.getCallback();
 thing.name = "Shoe";
 callback();
