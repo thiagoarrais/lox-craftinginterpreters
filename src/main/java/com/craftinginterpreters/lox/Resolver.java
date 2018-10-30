@@ -49,6 +49,10 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
     declare(stmt.name);
 
+    if (stmt.superclass != null) {
+      resolve(stmt.superclass);   
+    }   
+
     define(stmt.name);                         
 
     beginScope();                              
