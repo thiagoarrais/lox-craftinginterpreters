@@ -1,0 +1,6 @@
+var a = 8;
+
+if (a > 0) print("a is greater than zero");
+else print("a is zero");
+
+print("thanks!");
