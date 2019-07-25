@@ -1,0 +1,8 @@
+// should error
+{
+  var a = "outer";
+  {
+    var a = a;
+    print a;
+  }
+}
