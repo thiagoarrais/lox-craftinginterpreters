@@ -1,0 +1,5 @@
+var t = true;
+var f = false;
+var r = t or f;
+
+print(r);
