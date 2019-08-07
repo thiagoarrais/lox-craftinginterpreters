@@ -1,0 +1,12 @@
+// declaration variant
+for (var i = 0;;) {
+  i = i + 1;
+  print(i);
+}
+
+// expression variant
+var j;
+for (j = 0;;) {
+  j = j + 1;
+  print(j);
+}
