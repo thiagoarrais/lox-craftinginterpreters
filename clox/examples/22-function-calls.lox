@@ -1,0 +1,11 @@
+fun fibb(n, prev) {
+  if (n <= 1) {
+    print n + prev;
+  } else {
+    fibb(n - 1, prev + n);
+  }
+}
+
+fibb(3, 0);
+fibb(4, 0);
+fibb(5, 0);
