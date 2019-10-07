@@ -1,0 +1,11 @@
+fun fibb(n) {
+  if (n <= 1) {
+    return n;
+  } else {
+    return n + fibb(n - 1);
+  }
+}
+
+print fibb(3);
+print fibb(4);
+print fibb(5);
