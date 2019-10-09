@@ -16,6 +16,12 @@ static Value clockNative(int argCount, Value* args) {
   return NUMBER_VAL((double)clock() / CLOCKS_PER_SEC);
 }
 
+static Value fcreateNative(int argCount, Value* args) {
+  FILE* f = fopen(AS_CSTRING(args[0]), "w");
+  fclose(f);
+  return NIL_VAL;
+}
+
 static void resetStack() {
   vm.stackTop = vm.stack; 
   vm.frameCount = 0;
@@ -62,6 +68,7 @@ void initVM() {
   initTable(&vm.strings);
 
   defineNative("clock", clockNative);
+  defineNative("fcreate", fcreateNative);
 }                  
 
 void freeVM() {    
