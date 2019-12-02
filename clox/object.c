@@ -19,6 +19,12 @@ static Obj* allocateObject(size_t size, ObjType type) {
   return object;                                           
 }
 
+ObjClosure* newClosure(ObjFunction* function) {               
+  ObjClosure* closure = ALLOCATE_OBJ(ObjClosure, OBJ_CLOSURE);
+  closure->function = function;                               
+  return closure;                                             
+}
+
 ObjFunction* newFunction() {
   ObjFunction* function = ALLOCATE_OBJ(ObjFunction, OBJ_FUNCTION);
 
@@ -82,14 +88,21 @@ ObjString* copyString(const char* chars, int length) {
   return allocateString(heapChars, length, hash);
 }
 
+static void printFunction(ObjFunction* function) {
+  if (function->name == NULL) {
+    printf("<script>");
+    return;
+  }
+  printf("<fn %s>", function->name->chars);
+}
+
 void printObject(Value value) {       
   switch (OBJ_TYPE(value)) {          
+    case OBJ_CLOSURE:                            
+      printFunction(AS_CLOSURE(value)->function);
+      break; 
     case OBJ_FUNCTION:
-      if (AS_FUNCTION(value)->name == NULL) {
-        printf("<script>");
-        break;
-      }
-      printf("<fn %s>", AS_FUNCTION(value)->name->chars);
+      printFunction(AS_FUNCTION(value));
       break;
     case OBJ_NATIVE:
       printf("<native fn>");
