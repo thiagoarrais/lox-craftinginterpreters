@@ -1,0 +1,13 @@
+fun makeClosure(value) {
+  fun closure() {
+    print value;
+  }
+  return closure;
+}
+
+var doughnut = makeClosure("doughnut");
+var bagel = makeClosure("bagel");
+print "next line should be 'doughnut'";
+doughnut();
+print "next line should be 'bagel'";
+bagel();
