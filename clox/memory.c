@@ -91,32 +91,6 @@ static void blackenObject(Obj* object) {
   }
 }
 
-static void markRoots() {
-  for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
-    markValue(*slot);
-  }
-
-  for (int i = 0; i < vm.frameCount; i++) {
-    markObject((Obj*)vm.frames[i].closure);
-  }
-
-  for (ObjUpvalue* upvalue = vm.openUpvalues;
-       upvalue != NULL;
-       upvalue = upvalue->next) {
-    markObject((Obj*)upvalue);
-  }
-
-  markTable(&vm.globals);
-  markCompilerRoots();
-}
-
-static void traceReferences() {
-  while (vm.grayCount > 0) {
-    Obj* object = vm.grayStack[--vm.grayCount];
-    blackenObject(object);
-  }
-}
-
 static void freeObject(Obj* object) {                     
 #ifdef DEBUG_LOG_GC
   printf("%p free type %d\n", (void*)object, object->type);
@@ -154,6 +128,56 @@ static void freeObject(Obj* object) {
   }                                                       
 }
 
+static void markRoots() {
+  for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
+    markValue(*slot);
+  }
+
+  for (int i = 0; i < vm.frameCount; i++) {
+    markObject((Obj*)vm.frames[i].closure);
+  }
+
+  for (ObjUpvalue* upvalue = vm.openUpvalues;
+       upvalue != NULL;
+       upvalue = upvalue->next) {
+    markObject((Obj*)upvalue);
+  }
+
+  markTable(&vm.globals);
+  markCompilerRoots();
+}
+
+static void traceReferences() {
+  while (vm.grayCount > 0) {
+    Obj* object = vm.grayStack[--vm.grayCount];
+    blackenObject(object);
+  }
+}
+
+static void sweep() {
+  Obj* previous = NULL;
+  Obj* object = vm.objects;
+  while (object != NULL) {
+    if (object->isMarked) {
+      object->isMarked = false;
+      previous = object;
+      object = object->next;
+    } else {
+      Obj* unreached = object;
+
+      object = object->next;
+      if (previous != NULL) {
+        previous->next = object;
+      } else {
+        vm.objects = object;
+      }
+
+      freeObject(unreached);
+    }
+  }
+}
+
+
 void collectGarbage() {
 #ifdef DEBUG_LOG_GC
   printf("-- gc begin\n");
@@ -161,6 +185,8 @@ void collectGarbage() {
 
   markRoots();
   traceReferences();
+  tableRemoveWhite(&vm.strings);
+  sweep();
 
 #ifdef DEBUG_LOG_GC
   printf("-- gc end\n");
