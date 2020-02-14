@@ -1,0 +1,21 @@
+fun makeInstance(v) {
+    var value = v;
+
+    fun get() {
+        return value;
+    }
+
+    return get;
+}
+
+var i = 0;
+while (i < 128 * 1024) {
+    makeInstance(i);
+    print i;
+    i = i + 1;
+}
+
+var f = makeInstance("f");
+var g = makeInstance("g");
+print f();
+print g();

@@ -1,0 +1,12 @@
+var a = "a";
+{
+    var b = "b";
+    print b + a;
+}
+print "almost done";
+var c = "c";
+{
+    var d = "d";
+    print d + a;
+}
+print "the end";
