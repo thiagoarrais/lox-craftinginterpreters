@@ -119,7 +119,14 @@ static void freeObject(Obj* object) {
 #endif
 
   switch (object->type) {
-    case OBJ_CLASS: {        
+    case OBJ_BOUND_METHOD: {
+      ObjBoundMethod* bound = (ObjBoundMethod*)object;
+      markValue(bound->receiver);
+      markObject((Obj*)bound->method);
+      break;
+    }
+
+    case OBJ_CLASS: {
       ObjClass* klass = (ObjClass*)object;
       freeTable(&klass->methods);
       FREE(ObjClass, object);
