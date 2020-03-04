@@ -1,0 +1,15 @@
+
+class Person {
+  init(name) {
+    this.name = name;
+  }
+
+  sayName() {
+    print "My name is " + this.name;
+  }
+}
+
+var jane = Person("Jane");
+
+var method = jane.sayName;
+method(); // ?
